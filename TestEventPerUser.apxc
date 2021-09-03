@@ -1,0 +1,23 @@
+@isTest
+public class TestEventPerUser {
+    @isTest public static void lessEvents(){
+        Test.startTest();
+         Event_Per_User__mdt metadataRecord =[select Id ,Max_Events__c from Event_Per_User__mdt];
+        List<Event> listEvent=null;
+        for(Integer i=0;i<100;i++){
+            Event e=new Event();
+            e.ActivityDate=Date.today();
+            e.Subject='meeting'+i;
+            listEvent.add(e);
+        }
+        try{
+        insert listEvent;
+        }
+        catch(Exception e){
+           Test.stopTest(); 
+        }
+      System.assertEquals(100, metadataRecord.Max_Events__c);
+        
+    }
+    
+}
