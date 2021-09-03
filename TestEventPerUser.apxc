@@ -2,8 +2,8 @@
 public class TestEventPerUser {
     @isTest public static void lessEvents(){
         Test.startTest();
-         Event_Per_User__mdt metadataRecord =[select Id ,Max_Events__c from Event_Per_User__mdt];
-        List<Event> listEvent=null;
+        Event_Per_User__mdt metadataRecord =[select Id ,Max_Events__c from Event_Per_User__mdt];
+        List<Event> listEvent=new List<Event>();
         for(Integer i=0;i<100;i++){
             Event e=new Event();
             e.ActivityDate=Date.today();
@@ -11,13 +11,33 @@ public class TestEventPerUser {
             listEvent.add(e);
         }
         try{
-        insert listEvent;
+            insert listEvent;
         }
-        catch(Exception e){
-           Test.stopTest(); 
+        catch(Exception o){
+            System.debug(o.getMessage());
         }
-      System.assertEquals(100, metadataRecord.Max_Events__c);
-        
+        // System.assertEquals(listEvent.size(), metadataRecord.MaxEvents__c);
+        Test.stopTest();
+    }
+    
+    @isTest public static void moreThenMaxEvents(){
+        Test.startTest();
+        Event_Per_User__mdt metadataRecord =[select Id ,Max_Events__c from Event_Per_User__mdt];
+        List<Event> listEvent =new List<Event>();
+        for(Integer i=0;i<110;i++){
+            Event e=new Event();
+            e.ActivityDate=Date.today();
+            e.Subject='meeting'+i;
+            listEvent.add(e);
+        }
+        try{
+            insert listEvent;
+        }
+        catch(Exception g){
+            System.debug(g.getMessage());
+        }
+        // System.assertEquals(110, metadataRecord.MaxEvents__c);
+        Test.stopTest();
     }
     
 }
